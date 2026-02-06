@@ -98,7 +98,7 @@ Host board
 ## 进展
 1. 基本写完整个C++推理流程，从LoadModel $\rightarrow$ GetModelInfo $\rightarrow$ Preprocess $\rightarrow$ Inference $\rightarrow$ Postprocess
 2. 目前可以成功推理出结果，并保存为图片.但是推理数据不对. 输入不同的一组图片，输出类似于中间蓝，周围红 
-![本地图片示例](./log/result.png)
+
 
 # 1.20
 
