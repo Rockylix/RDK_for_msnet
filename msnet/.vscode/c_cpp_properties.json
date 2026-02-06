@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/include",    // 显式包含你的 include 文件夹
+                "/usr/include",                 // 系统头文件
+                "/usr/local/include",           // 系统第三方库头文件
+                "/usr/include/opencv4"          // OpenCV 的典型安装路径（如果是 opencv4）
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "intelliSenseMode": "linux-gcc-arm64"
+        }
+    ],
+    "version": 4
+}

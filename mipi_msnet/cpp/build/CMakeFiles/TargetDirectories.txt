@@ -1,0 +1,9 @@
+/root/mipi_msnet/cpp/build/CMakeFiles/bpu_detect.dir
+/root/mipi_msnet/cpp/build/CMakeFiles/mipi.dir
+/root/mipi_msnet/cpp/build/CMakeFiles/main.dir
+/root/mipi_msnet/cpp/build/CMakeFiles/edit_cache.dir
+/root/mipi_msnet/cpp/build/CMakeFiles/rebuild_cache.dir
+/root/mipi_msnet/cpp/build/CMakeFiles/list_install_components.dir
+/root/mipi_msnet/cpp/build/CMakeFiles/install.dir
+/root/mipi_msnet/cpp/build/CMakeFiles/install/local.dir
+/root/mipi_msnet/cpp/build/CMakeFiles/install/strip.dir

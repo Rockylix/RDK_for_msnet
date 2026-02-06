@@ -1,0 +1,7 @@
+./mipi_msnet/.vscode/
+./msnet/.vscode/
+
+# ignore model 文件
+
+./mipi_msnet/model/*
+./msnet/model/*

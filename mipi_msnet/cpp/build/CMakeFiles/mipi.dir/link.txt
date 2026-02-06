@@ -1,0 +1,2 @@
+/usr/bin/ar qc libmipi.a CMakeFiles/mipi.dir/Mipi_capture.cpp.o
+/usr/bin/ranlib libmipi.a

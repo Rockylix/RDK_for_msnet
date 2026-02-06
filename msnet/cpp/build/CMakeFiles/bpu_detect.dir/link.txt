@@ -1,0 +1,2 @@
+/usr/bin/ar qc libbpu_detect.a CMakeFiles/bpu_detect.dir/BPU_Detect.cpp.o
+/usr/bin/ranlib libbpu_detect.a

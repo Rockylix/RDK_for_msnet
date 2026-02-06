@@ -1,0 +1,8 @@
+/root/msnet/cpp/build/CMakeFiles/bpu_detect.dir
+/root/msnet/cpp/build/CMakeFiles/main.dir
+/root/msnet/cpp/build/CMakeFiles/edit_cache.dir
+/root/msnet/cpp/build/CMakeFiles/rebuild_cache.dir
+/root/msnet/cpp/build/CMakeFiles/list_install_components.dir
+/root/msnet/cpp/build/CMakeFiles/install.dir
+/root/msnet/cpp/build/CMakeFiles/install/local.dir
+/root/msnet/cpp/build/CMakeFiles/install/strip.dir
