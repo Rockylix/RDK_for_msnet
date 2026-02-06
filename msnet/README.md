@@ -66,7 +66,7 @@ Host board
 ## 问题待解决
 - 板载loadmodel 出现问题：错误码-6000002，加载模型失败。查看论坛没有发现原因。
 目前怀疑模型过大，下一步用小模型进行测试。
-![本地文件路径](./img/err_of_loading.png)
+![本地文件路径](./log/err_of_loading.png)
 
 
 # 1.13 load 问题解决
@@ -81,11 +81,11 @@ Host board
 ## 解决方案
 - 确定文件传输过程完整，文件完整，这样加载就成功.<br />
 记录加载时间 **21039.04ms = 21s**
-![\本地图片](./img/success_of_684*384.png)
+![\本地图片](./log/success_of_684*384.png)
 - **640×352 $\rightarrow$ 384×192**
 并重新生成了模型文件，成功解决了加载失败的问题.<br />
 记录加载时间 **6590.84ms = 6.5s**
-![\本地图片](./img/success_of_192*384.png)
+![\本地图片](./log/success_of_192*384.png)
 
 
 # 1.14 
@@ -98,7 +98,7 @@ Host board
 ## 进展
 1. 基本写完整个C++推理流程，从LoadModel $\rightarrow$ GetModelInfo $\rightarrow$ Preprocess $\rightarrow$ Inference $\rightarrow$ Postprocess
 2. 目前可以成功推理出结果，并保存为图片.但是推理数据不对. 输入不同的一组图片，输出类似于中间蓝，周围红 
-![本地图片示例](./img/result.png)
+![本地图片示例](./log/result.png)
 
 # 1.20
 
@@ -112,14 +112,14 @@ Host board
 ## 问题：
 你的校准数据准备脚本与你的 config 配置文件之间存在 三重致命冲突：
 1. 冲突 1：数值量程灾难（最严重）
-    脚本逻辑：img_np = np.array(img).astype(np.float32) / 255.0。你把像素缩放到了 [0, 1] 之间。
+    脚本逻辑：log_np = np.array(log).astype(np.float32) / 255.0。你把像素缩放到了 [0, 1] 之间。
     Config 配置：norm_type: 'data_mean_and_scale'，且 mean_value: 123.675...。
     后果：地平线工具链在量化校准时，会读取你的 .bin 文件，并根据配置执行减均值操作。
     计算公式变成了：( [0~1 之间的数] - 123.675 ) * 0.017。
     结果：网络输入的数值变成了 -2.1 左右的定值（正常的输入应该在 -2 到 +2 之间波动）。
     网络接收到的信号几乎全被“淹没”在 -2 附近的死区里，根本提取不出任何纹理，所以无论你输入什么，输出都是一堆无意义的噪点。
 2. 冲突 2：内存排布（Layout）冲突
-    脚本逻辑：img_np = img_np.transpose(2, 0, 1)。你保存的是 CHW 排布。
+    脚本逻辑：log_np = log_np.transpose(2, 0, 1)。你保存的是 CHW 排布。
     Config 配置：input_layout_rt: 'NHWC'。
     后果：地平线量化工具在读取 .bin 文件时，会严格按照 input_layout_rt 指定的排布去解析。
     它以为内存里是 R,G,B,R,G,B...，但你给的是 所有R, 然后所有G, 然后所有B。
@@ -141,17 +141,17 @@ Host board
 </mark>
 
 1. 按照以上修改之后，第一张图的结果如下：
-![left](./img/left_1.png) ![right](./img/right_1.png)
-![result](./img/result_new_1.jpg)
+![left](./log/left_1.png) ![right](./log/right_1.png)
+![result](./log/result_new_1.jpg)
 
 # 1.26
 2. 并且我排除了letterbox的方法影响，只用cut的数据集来校准，效果还是无法明确看出
 
 3. 先排除模型文件的影响，采用 官方模型文件“DStereoV2.6_int8.bin”进行测试，官方(640×352)和msnet(384×192)、msnet(684×384)均采用resize处理，结果如下,成功实现板载推理：
-![result_official](./img/result_official.png)
-![result_ms](./img/result_ms.png)
-![result_ms_684](./img/result_ms_684×384.png)
-![left](./img/left.png) 
+![result_official](./log/result_official.png)
+![result_ms](./log/result_ms.png)
+![result_ms_684](./log/result_ms_684×384.png)
+![left](./log/left.png) 
 并且官方每个阶段的推理时间如下：</br>
 
 <mark>
