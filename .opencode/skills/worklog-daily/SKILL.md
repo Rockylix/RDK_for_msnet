@@ -152,6 +152,79 @@ if has_significant_issue_or_optimization:
     )
 ```
 
+### 5. Git 版本控制与远程同步 (Version Control)
+
+在完成本地文档生成和 Notion 同步后，必须执行 Git 提交和推送操作，确保工作日志版本化并同步至远程仓库。
+
+#### 5.1 检查与暂存 (Stage Changes)
+- **检查状态**：运行 `git status` 查看新生成的文件
+- **暂存工作日志相关文件**：
+  ```bash
+  git add .opencode/skills/worklog-daily/
+  git add daily/
+  git add Worklog.md
+  ```
+
+#### 5.2 提交规范 (Commit Convention)
+- **提交信息格式**：参考项目现有提交风格，采用清晰的多行描述
+- **标准模板**：
+  ```bash
+  git commit -m "Add worklog-daily skill with automated daily log generation and Notion sync
+  
+  - Implement three-layer Notion architecture (project/daily logs/knowledge base)
+  - Add automated log extraction from [project_names]
+  - Generate structured daily logs with key parameters, bugs, and solutions
+  - Create knowledge base entries for critical technical issues
+  - Add Python scripts for log analysis and generation (UTF-8 encoding support)"
+  ```
+
+#### 5.3 推送到远程仓库 (Push to Remote)
+- **执行推送**：
+  ```bash
+  git push origin main
+  ```
+  或根据实际分支名称调整（如 `master`、`develop`）
+
+#### 5.4 执行顺序（完整闭环）
+1. ✅ **数据采集** → 运行脚本收集 Git 提交和笔记
+2. ✅ **智能分析** → AI 提取关键字段和技术细节
+3. ✅ **本地生成** → 创建/更新 `daily/*.md` 和 `Worklog.md`
+4. ✅ **Notion 同步** → 更新三层架构（项目页/日志汇总/经验库）
+5. ✅ **Git 提交** → 暂存文件 + 规范化提交信息
+6. ✅ **推送远程** → 同步至 GitHub/GitLab 等远程仓库
+
+#### 5.5 自动化脚本示例（可选）
+可在 `scripts/` 目录下创建 `commit_and_push.sh`（Linux/macOS）或 `commit_and_push.ps1`（Windows）：
+
+```bash
+#!/bin/bash
+# scripts/commit_and_push.sh
+
+# 暂存工作日志文件
+git add .opencode/skills/worklog-daily/ daily/ Worklog.md
+
+# 生成提交信息（包含日期和项目名称）
+DATE=$(date +%Y-%m-%d)
+PROJECT_NAME=$(basename $(pwd))
+
+git commit -m "Update worklog for ${PROJECT_NAME} - ${DATE}
+
+- Add daily log entries with technical details
+- Sync critical issues to Notion knowledge base
+- Update performance metrics and bug resolutions"
+
+# 推送到远程仓库
+git push origin main
+
+echo "✅ Worklog committed and pushed successfully!"
+```
+
+#### 5.6 注意事项
+- **推送前确认**：确保 Notion 同步已成功完成，避免不完整数据进入版本历史
+- **分支策略**：若项目采用 feature 分支，应推送至对应分支而非直接推送 main
+- **冲突处理**：若出现推送冲突，先执行 `git pull --rebase` 解决冲突后再推送
+- **敏感信息**：确保工作日志中不包含 API 密钥、密码等敏感信息
+
 ## 编码与终端注意事项 (Encoding Guardrails)
 - **必须使用 UTF-8 写入文件**：本地日志与 `Worklog.md` 统一使用 UTF-8。优先使用 `Set-Content -Encoding UTF8` 或在 Python 中显式 `encoding='utf-8'`。
 - **避免在命令行内联中文生成内容**：PowerShell/管道/终端编码不一致时会把中文变成 `?`。如果需要生成大量中文，先写一个 UTF-8 的 `.py` 脚本文件（存放在 `scripts/`），再运行该脚本。
@@ -179,7 +252,12 @@ if has_significant_issue_or_optimization:
    - 解决方案字段必须结构化：问题现象 → 排查过程 → 解决步骤 → 验证结果
    - 参数对比必须使用表格或明确的前后对比格式
 
-6. **无活动处理**：若今日无 Git 提交且无笔记记录，本地文档记录为"今日无开发活动"，不触发 Notion 写入。
+6. **Git 版本控制要求**：
+   - 每次完成工作日志生成和 Notion 同步后，必须执行 Git 提交和推送
+   - 提交信息应清晰描述本次日志更新的内容和关键技术点
+   - 确保远程仓库与本地工作日志保持同步
+
+7. **无活动处理**：若今日无 Git 提交且无笔记记录，本地文档记录为"今日无开发活动"，不触发 Notion 写入和 Git 提交。
 
 ## 资源与工具要求
 
